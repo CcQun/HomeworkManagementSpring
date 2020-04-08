@@ -4,6 +4,8 @@ import org.example.javaee.class01.jdbc.HomeworkJDBC;
 import org.example.javaee.class01.model.Homework;
 import org.example.javaee.class01.model.Student;
 import org.example.javaee.class01.model.StudentHomework;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/hms")
 public class HMSController {
+    public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    public HomeworkJDBC homeworkJDBC = (HomeworkJDBC)context.getBean("HomeworkJDBC");
+
     @RequestMapping("/addHk")
     public String addHk() {
         return "addHomework";
@@ -31,12 +36,12 @@ public class HMSController {
     public void addHomework(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
 
-        Homework homework = new Homework();
+        Homework homework = (Homework)context.getBean("Homework");
         homework.setTitle(req.getParameter("title"));
         homework.setContent(req.getParameter("content"));
         homework.setCreateTime(new Date());
 
-        boolean result = HomeworkJDBC.insertHomework(homework);
+        boolean result = homeworkJDBC.insertHomework(homework);
 
         req.setAttribute("result",result);
         req.setAttribute("operationType","addHomework");
@@ -52,12 +57,12 @@ public class HMSController {
     public void addStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
 
-        Student student = new Student();
+        Student student = (Student)context.getBean("Student");
         student.setId(Long.parseLong(req.getParameter("id")));
         student.setName(req.getParameter("name"));
         student.setCreateTime(new Date());
 
-        boolean result = HomeworkJDBC.insertStudent(student);
+        boolean result = homeworkJDBC.insertStudent(student);
 
         req.setAttribute("result",result);
         req.setAttribute("operationType","addStudent");
@@ -66,7 +71,7 @@ public class HMSController {
 
     @RequestMapping("/displayHomework")
     public void displayHomework(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-        List<Homework> allHomework = HomeworkJDBC.displayHomework();
+        List<Homework> allHomework = homeworkJDBC.displayHomework();
         req.setAttribute("allHomeworkList",allHomework);
         req.getRequestDispatcher("/jsp/queryAllHomework.jsp").forward(req,resp);
     }
@@ -74,14 +79,14 @@ public class HMSController {
     @RequestMapping("/querySpecificHomework")
     protected void querySpecificHomework(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String homeworkId = req.getParameter("id");
-        List<StudentHomework> result = HomeworkJDBC.selectSpecificHomework(homeworkId);
+        List<StudentHomework> result = homeworkJDBC.selectSpecificHomework(homeworkId);
         req.setAttribute("resultList", result);
         req.getRequestDispatcher("/jsp/specificHomeworkSubmission.jsp").forward(req, resp);
     }
 
     @RequestMapping("/displayAllHomework")
     protected void displayAllHomework(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Homework> allHomework = HomeworkJDBC.displayHomework();
+        List<Homework> allHomework = homeworkJDBC.displayHomework();
         req.setAttribute("allHomework",allHomework);
         req.getRequestDispatcher("/jsp/displayAllHomework.jsp").forward(req,resp);
     }
@@ -89,14 +94,14 @@ public class HMSController {
     @RequestMapping(value = "/submitHomework",method = RequestMethod.GET)
     protected void submitHomework1(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        StudentHomework studentHomework = new StudentHomework();
+        StudentHomework studentHomework = (StudentHomework)context.getBean("StudentHomework");
         studentHomework.setHomeworkId(Long.parseLong(req.getParameter("homeworkId")));
         studentHomework.setStudentId(Long.parseLong(req.getParameter("studentId")));
         studentHomework.setHomeworkTitle(req.getParameter("title"));
         studentHomework.setHomeworkContent(req.getParameter("content"));
         studentHomework.setCreateTime(new Date());
 
-        boolean result = HomeworkJDBC.insertStudentHomework(studentHomework);
+        boolean result = homeworkJDBC.insertStudentHomework(studentHomework);
 
         req.setAttribute("result",result);
         req.setAttribute("operationType","addStudentHomework");

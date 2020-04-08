@@ -3,6 +3,9 @@ package org.example.javaee.class01.jdbc;
 import org.example.javaee.class01.model.Homework;
 import org.example.javaee.class01.model.Student;
 import org.example.javaee.class01.model.StudentHomework;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +16,8 @@ import java.util.List;
  * @Date 2020/3/10 13:53<
  */
 public class HomeworkJDBC {
+    public static ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
     /**
      * 插入新作业
      * @param homework
@@ -86,7 +91,7 @@ public class HomeworkJDBC {
             try(Statement statement = connection.createStatement()){
                 try(ResultSet resultSet = statement.executeQuery(sqlString)){
                     while(resultSet.next()){
-                        Homework homework = new Homework();
+                        Homework homework = (Homework)context.getBean("Homework");
                         homework.setId(resultSet.getLong("id"));
                         homework.setTitle(resultSet.getString("title"));
                         homework.setContent(resultSet.getString("content"));
@@ -119,7 +124,7 @@ public class HomeworkJDBC {
             try(Statement statement = connection.createStatement()){
                 try(ResultSet resultSet = statement.executeQuery(sqlString)){
                     while(resultSet.next()){
-                        StudentHomework studentHomework = new StudentHomework();
+                        StudentHomework studentHomework = (StudentHomework)context.getBean("StudentHomework");
                         studentHomework.setId(resultSet.getLong("id"));
                         studentHomework.setStudentId(resultSet.getLong("student_id"));
                         studentHomework.setHomeworkId(resultSet.getLong("homework_id"));
