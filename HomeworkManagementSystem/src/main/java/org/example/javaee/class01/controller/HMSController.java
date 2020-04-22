@@ -1,10 +1,14 @@
 package org.example.javaee.class01.controller;
 
+import org.example.javaee.class01.aspect.JDBCAspect;
 import org.example.javaee.class01.jdbc.HomeworkJDBC;
 import org.example.javaee.class01.model.Homework;
 import org.example.javaee.class01.model.Student;
 import org.example.javaee.class01.model.StudentHomework;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +25,13 @@ import java.util.List;
  * @Author CcQun
  * @Date 2020/4/7 14:45
  */
+//@ComponentScan("org.example.javaee.class01.*")
+//@EnableAspectJAutoProxy
 @Controller
 @RequestMapping("/hms")
 public class HMSController {
     public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    //public AnnotationConfigApplicationContext context2 = new AnnotationConfigApplicationContext(HMSController.class);
     public HomeworkJDBC homeworkJDBC = (HomeworkJDBC)context.getBean("HomeworkJDBC");
 
     @RequestMapping("/addHk")
@@ -41,6 +48,7 @@ public class HMSController {
         homework.setContent(req.getParameter("content"));
         homework.setCreateTime(new Date());
 
+        //JDBCAspect jdbcAspect = context2.getBean("jdbcAspect",JDBCAspect.class);
         boolean result = homeworkJDBC.insertHomework(homework);
 
         req.setAttribute("result",result);

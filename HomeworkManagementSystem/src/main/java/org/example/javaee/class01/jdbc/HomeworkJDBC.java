@@ -4,8 +4,8 @@ import org.example.javaee.class01.model.Homework;
 import org.example.javaee.class01.model.Student;
 import org.example.javaee.class01.model.StudentHomework;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import java.util.List;
  * @Author CcQun
  * @Date 2020/3/10 13:53<
  */
+@Service
 public class HomeworkJDBC {
     public static ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 

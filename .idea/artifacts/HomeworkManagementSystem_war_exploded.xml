@@ -16,6 +16,8 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Spring-5.2.3.RELEASE" />
           <element id="library" level="project" name="Spring MVC-5.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.9.5" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.9.5" />
         </element>
       </element>
     </root>

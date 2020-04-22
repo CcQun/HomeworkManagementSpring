@@ -41,7 +41,5 @@ public class Student {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+    public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 }
