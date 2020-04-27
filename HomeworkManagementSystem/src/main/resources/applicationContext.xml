@@ -8,10 +8,11 @@
        http://www.springframework.org/schema/aop
        https://www.springframework.org/schema/aop/spring-aop.xsd">
 
+<!--    <context:component-scan base-package="org.example.javaee.class01.aspect, org.example.javaee.class01.jdbc"/>-->
     <aop:aspectj-autoproxy/>
     <bean id="Homework" class="org.example.javaee.class01.model.Homework" scope="prototype"></bean>
     <bean id="Student" class="org.example.javaee.class01.model.Student" scope="prototype"></bean>
     <bean id="StudentHomework" class="org.example.javaee.class01.model.StudentHomework" scope="prototype"></bean>
-    <bean id="HomeworkJDBC" class="org.example.javaee.class01.jdbc.HomeworkJDBC"></bean>
+    <bean id="HomeworkJDBC" class="org.example.javaee.class01.jdbc.HomeworkJDBC"  scope="prototype"></bean>
     <bean id="JDBCAspect" name="JDBCAspect" class="org.example.javaee.class01.aspect.JDBCAspect" scope="prototype"/>
 </beans>

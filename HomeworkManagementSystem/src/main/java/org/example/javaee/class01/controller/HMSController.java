@@ -25,14 +25,14 @@ import java.util.List;
  * @Author CcQun
  * @Date 2020/4/7 14:45
  */
-//@ComponentScan("org.example.javaee.class01.*")
+//@ComponentScan({"org.example.javaee.class01.aspect","org.example.javaee.class01.jdbc"})
 //@EnableAspectJAutoProxy
 @Controller
 @RequestMapping("/hms")
 public class HMSController {
     public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     //public AnnotationConfigApplicationContext context2 = new AnnotationConfigApplicationContext(HMSController.class);
-    public HomeworkJDBC homeworkJDBC = (HomeworkJDBC)context.getBean("HomeworkJDBC");
+    public HomeworkJDBC homeworkJDBC = (HomeworkJDBC)context.getBean(HomeworkJDBC.class);
 
     @RequestMapping("/addHk")
     public String addHk() {
@@ -48,7 +48,6 @@ public class HMSController {
         homework.setContent(req.getParameter("content"));
         homework.setCreateTime(new Date());
 
-        //JDBCAspect jdbcAspect = context2.getBean("jdbcAspect",JDBCAspect.class);
         boolean result = homeworkJDBC.insertHomework(homework);
 
         req.setAttribute("result",result);

@@ -5,6 +5,7 @@ import org.example.javaee.class01.model.Student;
 import org.example.javaee.class01.model.StudentHomework;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -16,8 +17,9 @@ import java.util.List;
  * @Date 2020/3/10 13:53<
  */
 @Service
+//@Component
 public class HomeworkJDBC {
-    public static ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    public ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
     /**
      * 插入新作业
@@ -26,17 +28,21 @@ public class HomeworkJDBC {
      * @Author CcQun
      * @Date 2020/3/11 15:33
      */
-    public static boolean insertHomework(Homework homework){
+    public boolean insertHomework(Homework homework){
         String sqlString = "insert into s_homework(title,content,create_time) values(?,?,?)";
 
         int resultNum = 0;
 
         try(Connection connection = DatabasePool.getHikariDataSource().getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sqlString)) {
+                connection.setAutoCommit(false);
                 statement.setString(1,homework.getTitle());
                 statement.setString(2,homework.getContent());
                 statement.setTimestamp(3,new Timestamp(homework.getCreateTime().getTime()));
                 resultNum = statement.executeUpdate();
+                connection.commit();
+            }catch(Exception e){
+                connection.rollback();
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -51,7 +57,7 @@ public class HomeworkJDBC {
      * @Author CcQun
      * @Date 2020/3/11 15:34
      */
-    public static boolean insertStudent(Student student){
+    public boolean insertStudent(Student student){
         String selectSql = "select * from s_student where id = " + student.getId();
         String insertSql = "insert into s_student(id,name,create_time) values(?,?,?)";
 
@@ -60,6 +66,7 @@ public class HomeworkJDBC {
         try(Connection connection = DatabasePool.getHikariDataSource().getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery(selectSql)) {
+                    connection.setAutoCommit(false);
                     resultSet.last();
                     if(resultSet.getRow() == 0){
                         PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
@@ -68,7 +75,10 @@ public class HomeworkJDBC {
                         preparedStatement.setTimestamp(3,new Timestamp(student.getCreateTime().getTime()));
                         resultNum = preparedStatement.executeUpdate();
                     }
+                    connection.commit();
                 }
+            }catch(Exception e){
+                connection.rollback();
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -84,13 +94,14 @@ public class HomeworkJDBC {
      * @Author CcQun
      * @Date 2020/3/11 17:40
      */
-    public static List<Homework> displayHomework(){
+    public List<Homework> displayHomework(){
         String sqlString = "select * from s_homework";
 
         List<Homework> result = new ArrayList<Homework>();
         try(Connection connection = DatabasePool.getHikariDataSource().getConnection()){
             try(Statement statement = connection.createStatement()){
                 try(ResultSet resultSet = statement.executeQuery(sqlString)){
+                    connection.setAutoCommit(false);
                     while(resultSet.next()){
                         Homework homework = (Homework)context.getBean("Homework");
                         homework.setId(resultSet.getLong("id"));
@@ -100,7 +111,10 @@ public class HomeworkJDBC {
                         homework.setUpdateTime(resultSet.getTimestamp("update_time"));
                         result.add(homework);
                     }
+                    connection.commit();
                 }
+            }catch(Exception e){
+                connection.rollback();
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -115,7 +129,7 @@ public class HomeworkJDBC {
      * @author CcQun
      * @date 2020/3/10 14:39
      */
-    public static List<StudentHomework> selectSpecificHomework(String homeworkId){
+    public List<StudentHomework> selectSpecificHomework(String homeworkId){
         String sqlString = "select * from s_student_homework where homework_id = " + homeworkId;
         System.out.println(sqlString);
 
@@ -124,6 +138,7 @@ public class HomeworkJDBC {
         try(Connection connection = DatabasePool.getHikariDataSource().getConnection()){
             try(Statement statement = connection.createStatement()){
                 try(ResultSet resultSet = statement.executeQuery(sqlString)){
+                    connection.setAutoCommit(false);
                     while(resultSet.next()){
                         StudentHomework studentHomework = (StudentHomework)context.getBean("StudentHomework");
                         studentHomework.setId(resultSet.getLong("id"));
@@ -135,7 +150,10 @@ public class HomeworkJDBC {
                         studentHomework.setUpdateTime(resultSet.getDate("update_time"));
                         result.add(studentHomework);
                     }
+                    connection.commit();
                 }
+            }catch(Exception e){
+                connection.rollback();
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -150,7 +168,7 @@ public class HomeworkJDBC {
      * @Author CcQun
      * @Date 2020/3/12 18:10
      */
-    public static boolean insertStudentHomework(StudentHomework studentHomework){
+    public boolean insertStudentHomework(StudentHomework studentHomework){
         String selectSql = "select * from s_student where id = " + studentHomework.getStudentId();
         String insertSql = "insert into s_student_homework(student_id,homework_id,homework_title,homework_content,create_time) values(?,?,?,?,?)";
 
@@ -159,6 +177,7 @@ public class HomeworkJDBC {
         try(Connection connection = DatabasePool.getHikariDataSource().getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery(selectSql)) {
+                    connection.setAutoCommit(false);
                     resultSet.last();
                     if(resultSet.getRow() != 0){
                         PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
@@ -169,7 +188,10 @@ public class HomeworkJDBC {
                         preparedStatement.setTimestamp(5,new Timestamp(studentHomework.getCreateTime().getTime()));
                         resultNum = preparedStatement.executeUpdate();
                     }
+                    connection.commit();
                 }
+            }catch(Exception e){
+                connection.rollback();
             }
         }catch (SQLException e){
             e.printStackTrace();
