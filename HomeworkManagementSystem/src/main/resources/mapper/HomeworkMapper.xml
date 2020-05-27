@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.javaee.class01.dao.HomeworkDao">
+    <resultMap id="HomeworkResultMap" type="org.example.javaee.class01.model.Homework">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <select id="selectAll" resultType="Homework">
+        select * from  s_homework
+    </select>
+
+    <insert id="insert" parameterType="org.example.javaee.class01.model.Homework" useGeneratedKeys="true" keyProperty="id">
+        insert into s_homework(title,content,create_time) values(#{title},#{content},#{createTime})
+    </insert>
+</mapper>

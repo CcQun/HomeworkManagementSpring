@@ -8,7 +8,7 @@ import java.util.Date;
  * Student实体类
  */
 public class Student {
-    private long id;
+    private Long id;
     private String name;
     private Date createTime;
     private Date updateTime;

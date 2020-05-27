@@ -8,7 +8,7 @@ import java.util.Date;
  * Homework实体类
  */
 public class Homework {
-    private long id;
+    private Long id;
     private String title;
     private String content;
     private Date createTime;

@@ -18,6 +18,8 @@
           <element id="library" level="project" name="Spring MVC-5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.9.5" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.9.5" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.4" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.4" />
         </element>
       </element>
     </root>

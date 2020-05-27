@@ -8,9 +8,9 @@ import java.util.Date;
  * StudentHomework实体类
  */
 public class StudentHomework {
-    private long id;
-    private long studentId;
-    private long homeworkId;
+    private Long id;
+    private Long studentId;
+    private Long homeworkId;
     private String homeworkTitle;
     private String homeworkContent;
     private Date createTime;

@@ -10,9 +10,37 @@
 
 <!--    <context:component-scan base-package="org.example.javaee.class01.aspect, org.example.javaee.class01.jdbc"/>-->
     <aop:aspectj-autoproxy/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/school?serverTimezone=GMT"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Cui5039795891"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="org.example.javaee.class01.model" />
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.example.javaee.class01.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
     <bean id="Homework" class="org.example.javaee.class01.model.Homework" scope="prototype"></bean>
     <bean id="Student" class="org.example.javaee.class01.model.Student" scope="prototype"></bean>
     <bean id="StudentHomework" class="org.example.javaee.class01.model.StudentHomework" scope="prototype"></bean>
     <bean id="HomeworkJDBC" class="org.example.javaee.class01.jdbc.HomeworkJDBC"  scope="prototype"></bean>
     <bean id="JDBCAspect" name="JDBCAspect" class="org.example.javaee.class01.aspect.JDBCAspect" scope="prototype"/>
+    <bean id="HomeworkService" name="HomeworkService" class="org.example.javaee.class01.service.HomeworkService" scope="prototype"/>
+    <bean id="StudentService" name="StudentService" class="org.example.javaee.class01.service.StudentService" scope="prototype"/>
+    <bean id="StudentHomeworkService" name="StudentHomeworkService" class="org.example.javaee.class01.service.StudentHomeworkService" scope="prototype"/>
 </beans>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.javaee.class01.dao.StudentHomeworkDao">
+    <resultMap id="StudentHomeworkResultMap" type="org.example.javaee.class01.model.StudentHomework">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="student_id" jdbcType="BIGINT" property="studentId"/>
+        <result column="homework_id" jdbcType="BIGINT" property="homeworkId"/>
+        <result column="homework_title" jdbcType="VARCHAR" property="homeworkTitle"/>
+        <result column="homework_content" jdbcType="VARCHAR" property="homeworkContent"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectByHWId" parameterType="Long" resultMap="StudentHomeworkResultMap">
+        select * from s_student_homework where homework_id = #{homeworkId}
+    </select>
+
+    <insert id="insert" parameterType="org.example.javaee.class01.model.StudentHomework" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into s_student_homework(student_id,homework_id,homework_title,homework_content,create_time) values(#{studentId},#{homeworkId},#{homeworkTitle},#{homeworkContent},#{createTime})
+    </insert>
+</mapper>
